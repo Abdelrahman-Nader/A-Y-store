@@ -1,0 +1,162 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-3">
+      <!-- قائمة التنقل الجانبية -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">{{ 'AUTH.PROFILE' | translate }}</h5>
+        </div>
+        <div class="list-group list-group-flush">
+          <button
+            class="list-group-item list-group-item-action"
+            [class.active]="activeTab === 'profile'"
+            (click)="setActiveTab('profile')"
+          >
+            <i class="bi bi-person me-2"></i>
+            {{ 'AUTH.PROFILE' | translate }}
+          </button>
+          <button
+            class="list-group-item list-group-item-action"
+            [class.active]="activeTab === 'password'"
+            (click)="setActiveTab('password')"
+          >
+            <i class="bi bi-key me-2"></i>
+            {{ 'AUTH.CHANGE_PASSWORD' | translate }}
+          </button>
+          <button
+            class="list-group-item list-group-item-action text-danger"
+            (click)="logout()"
+          >
+            <i class="bi bi-box-arrow-right me-2"></i>
+            {{ 'AUTH.LOGOUT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <!-- تبويب الملف الشخصي -->
+      <div class="card" *ngIf="activeTab === 'profile'">
+        <div class="card-header">
+          <h5 class="mb-0">{{ 'AUTH.PROFILE' | translate }}</h5>
+        </div>
+        <div class="card-body">
+          <!-- رسالة النجاح -->
+          <div *ngIf="profileSuccess" class="alert alert-success">
+            {{ 'AUTH.PROFILE_UPDATE_SUCCESS' | translate }}
+          </div>
+
+          <!-- رسالة الخطأ -->
+          <div *ngIf="profileError" class="alert alert-danger">
+            {{ profileError }}
+          </div>
+
+          <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+            <div class="mb-3">
+              <label for="name" class="form-label">{{ 'AUTH.NAME' | translate }}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                [ngClass]="{ 'is-invalid': f['name'].touched && f['name'].errors }"
+              >
+              <div *ngIf="f['name'].touched && f['name'].errors" class="invalid-feedback">
+                <div *ngIf="f['name'].errors['required']">{{ 'AUTH.NAME_REQUIRED' | translate }}</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">{{ 'AUTH.EMAIL' | translate }}</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }"
+              >
+              <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">{{ 'AUTH.EMAIL_REQUIRED' | translate }}</div>
+                <div *ngIf="f['email'].errors['email']">{{ 'AUTH.EMAIL_INVALID' | translate }}</div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="loading || profileForm.invalid">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              {{ 'ADMIN.UPDATE' | translate }}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- تبويب تغيير كلمة المرور -->
+      <div class="card" *ngIf="activeTab === 'password'">
+        <div class="card-header">
+          <h5 class="mb-0">{{ 'AUTH.CHANGE_PASSWORD' | translate }}</h5>
+        </div>
+        <div class="card-body">
+          <!-- رسالة النجاح -->
+          <div *ngIf="passwordSuccess" class="alert alert-success">
+            {{ 'AUTH.PASSWORD_CHANGE_SUCCESS' | translate }}
+          </div>
+
+          <!-- رسالة الخطأ -->
+          <div *ngIf="passwordError" class="alert alert-danger">
+            {{ passwordError }}
+          </div>
+
+          <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">{{ 'AUTH.CURRENT_PASSWORD' | translate }}</label>
+              <input
+                type="password"
+                class="form-control"
+                id="currentPassword"
+                formControlName="currentPassword"
+                [ngClass]="{ 'is-invalid': p['currentPassword'].touched && p['currentPassword'].errors }"
+              >
+              <div *ngIf="p['currentPassword'].touched && p['currentPassword'].errors" class="invalid-feedback">
+                <div *ngIf="p['currentPassword'].errors['required']">{{ 'AUTH.CURRENT_PASSWORD_REQUIRED' | translate }}</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">{{ 'AUTH.NEW_PASSWORD' | translate }}</label>
+              <input
+                type="password"
+                class="form-control"
+                id="newPassword"
+                formControlName="newPassword"
+                [ngClass]="{ 'is-invalid': p['newPassword'].touched && p['newPassword'].errors }"
+              >
+              <div *ngIf="p['newPassword'].touched && p['newPassword'].errors" class="invalid-feedback">
+                <div *ngIf="p['newPassword'].errors['required']">{{ 'AUTH.NEW_PASSWORD_REQUIRED' | translate }}</div>
+                <div *ngIf="p['newPassword'].errors['minlength']">{{ 'AUTH.PASSWORD_LENGTH' | translate }}</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">{{ 'AUTH.CONFIRM_NEW_PASSWORD' | translate }}</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                [ngClass]="{ 'is-invalid': (p['confirmPassword'].touched && p['confirmPassword'].errors) || passwordForm.hasError('passwordMismatch') }"
+              >
+              <div *ngIf="(p['confirmPassword'].touched && p['confirmPassword'].errors) || passwordForm.hasError('passwordMismatch')" class="invalid-feedback">
+                <div *ngIf="p['confirmPassword'].errors?.['required']">{{ 'AUTH.CONFIRM_NEW_PASSWORD_REQUIRED' | translate }}</div>
+                <div *ngIf="passwordForm.hasError('passwordMismatch')">{{ 'AUTH.PASSWORDS_MUST_MATCH' | translate }}</div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="passwordLoading || passwordForm.invalid">
+              <span *ngIf="passwordLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              {{ 'AUTH.CHANGE_PASSWORD' | translate }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

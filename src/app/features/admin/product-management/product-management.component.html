@@ -1,0 +1,344 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ 'ADMIN.PRODUCT_MANAGEMENT' | translate }}</h1>
+    <button class="btn btn-primary" (click)="addNewProduct()">
+      <i class="bi bi-plus-circle me-1"></i>
+      {{ 'ADMIN.ADD_PRODUCT' | translate }}
+    </button>
+  </div>
+
+  <!-- Product Form -->
+  <div *ngIf="showForm" class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">{{ isEditing ? ('ADMIN.EDIT_PRODUCT' | translate) : ('ADMIN.ADD_PRODUCT' | translate) }}</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <!-- Product Name -->
+          <div class="col-md-6 mb-3">
+            <label for="name" class="form-label">{{ 'ADMIN.PRODUCT_NAME' | translate }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+              [ngClass]="{ 'is-invalid': f['name'].touched && f['name'].errors }"
+            >
+            <div *ngIf="f['name'].touched && f['name'].errors" class="invalid-feedback">
+              <div *ngIf="f['name'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
+            </div>
+          </div>
+
+          <!-- Product Price -->
+          <div class="col-md-3 mb-3">
+            <label for="price" class="form-label">{{ 'ADMIN.PRODUCT_PRICE' | translate }}</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                formControlName="price"
+                [ngClass]="{ 'is-invalid': f['price'].touched && f['price'].errors }"
+              >
+              <div *ngIf="f['price'].touched && f['price'].errors" class="invalid-feedback">
+                <div *ngIf="f['price'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
+                <div *ngIf="f['price'].errors['min']">{{ 'VALIDATION.MIN_VALUE' | translate: { value: 0 } }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Discount -->
+          <div class="col-md-3 mb-3">
+            <label for="discount" class="form-label">{{ 'ADMIN.PRODUCT_DISCOUNT' | translate }}</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="discount"
+                formControlName="discount"
+                [ngClass]="{ 'is-invalid': f['discount'].touched && f['discount'].errors }"
+              >
+              <span class="input-group-text">%</span>
+              <div *ngIf="f['discount'].touched && f['discount'].errors" class="invalid-feedback">
+                <div *ngIf="f['discount'].errors['min']">{{ 'VALIDATION.MIN_VALUE' | translate: { value: 0 } }}</div>
+                <div *ngIf="f['discount'].errors['max']">{{ 'VALIDATION.MAX_VALUE' | translate: { value: 100 } }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Category -->
+          <div class="col-md-6 mb-3">
+            <label for="category" class="form-label">{{ 'ADMIN.PRODUCT_CATEGORY' | translate }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="category"
+              formControlName="category"
+              [ngClass]="{ 'is-invalid': f['category'].touched && f['category'].errors }"
+            >
+            <div *ngIf="f['category'].touched && f['category'].errors" class="invalid-feedback">
+              <div *ngIf="f['category'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
+            </div>
+          </div>
+
+          <!-- Product Quantity -->
+          <div class="col-md-3 mb-3">
+            <label for="quantity" class="form-label">{{ 'ADMIN.PRODUCT_QUANTITY' | translate }}</label>
+            <input
+              type="number"
+              class="form-control"
+              id="quantity"
+              formControlName="quantity"
+              [ngClass]="{ 'is-invalid': f['quantity'].touched && f['quantity'].errors }"
+            >
+            <div *ngIf="f['quantity'].touched && f['quantity'].errors" class="invalid-feedback">
+              <div *ngIf="f['quantity'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
+              <div *ngIf="f['quantity'].errors['min']">{{ 'VALIDATION.MIN_VALUE' | translate: { value: 0 } }}</div>
+            </div>
+          </div>
+
+          <!-- Product In Stock -->
+          <div class="col-md-3 mb-3">
+            <label class="form-label">{{ 'ADMIN.PRODUCT_STOCK' | translate }}</label>
+            <div class="form-check form-switch mt-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="inStock"
+                formControlName="inStock"
+              >
+              <label class="form-check-label" for="inStock">
+                {{ f['inStock'].value ? ('PRODUCT.IN_STOCK' | translate) : ('PRODUCT.OUT_OF_STOCK' | translate) }}
+              </label>
+            </div>
+          </div>
+
+          <!-- Product Image URL -->
+          <div class="col-md-9 mb-3">
+            <label for="imageUrl" class="form-label">{{ 'ADMIN.PRODUCT_IMAGE' | translate }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="imageUrl"
+              formControlName="imageUrl"
+              [ngClass]="{ 'is-invalid': f['imageUrl'].touched && f['imageUrl'].errors }"
+              (input)="onImageUrlChange()"
+            >
+            <div *ngIf="f['imageUrl'].touched && f['imageUrl'].errors" class="invalid-feedback">
+              <div *ngIf="f['imageUrl'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
+            </div>
+          </div>
+
+          <!-- Image Preview -->
+          <div class="col-md-3 mb-3" *ngIf="imagePreview">
+            <label class="form-label">{{ 'ADMIN.IMAGE_PREVIEW' | translate }}</label>
+            <div class="image-preview">
+              <img [src]="imagePreview" class="img-thumbnail" alt="Product Image Preview">
+            </div>
+          </div>
+
+          <!-- Product Description -->
+          <div class="col-md-12 mb-3">
+            <label for="description" class="form-label">{{ 'ADMIN.PRODUCT_DESCRIPTION' | translate }}</label>
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="description"
+              rows="3"
+              [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors }"
+            ></textarea>
+            <div *ngIf="f['description'].touched && f['description'].errors" class="invalid-feedback">
+              <div *ngIf="f['description'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
+            </div>
+          </div>
+
+          <!-- Product Sizes -->
+          <div class="col-md-6 mb-3">
+            <label for="sizes" class="form-label">{{ 'ADMIN.PRODUCT_SIZES' | translate }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="sizes"
+              formControlName="sizes"
+              placeholder="{{ 'ADMIN.SIZES_PLACEHOLDER' | translate }}"
+            >
+            <small class="form-text text-muted">{{ 'ADMIN.SIZES_HELP' | translate }}</small>
+          </div>
+
+          <!-- Product Colors -->
+          <div class="col-md-6 mb-3">
+            <label for="colors" class="form-label">{{ 'ADMIN.PRODUCT_COLORS' | translate }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="colors"
+              formControlName="colors"
+              placeholder="{{ 'ADMIN.COLORS_PLACEHOLDER' | translate }}"
+            >
+            <small class="form-text text-muted">{{ 'ADMIN.COLORS_HELP' | translate }}</small>
+          </div>
+
+          <!-- Featured and New Arrival -->
+          <div class="col-md-12 mb-3">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="featured"
+                    formControlName="featured"
+                  >
+                  <label class="form-check-label" for="featured">
+                    {{ 'ADMIN.PRODUCT_FEATURED' | translate }}
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="newArrival"
+                    formControlName="newArrival"
+                  >
+                  <label class="form-check-label" for="newArrival">
+                    {{ 'ADMIN.PRODUCT_NEW_ARRIVAL' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Buttons -->
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="cancelEdit()">
+            {{ 'ADMIN.CANCEL' | translate }}
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            {{ isEditing ? ('ADMIN.UPDATE_PRODUCT' | translate) : ('ADMIN.CREATE_PRODUCT' | translate) }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="{{ 'GENERAL.SEARCH' | translate }}"
+              [(ngModel)]="searchTerm"
+              (input)="search()"
+            >
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              (click)="clearSearch()"
+              [disabled]="!searchTerm"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            <button class="btn btn-primary" type="button" (click)="search()">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading and Error States -->
+  <div *ngIf="loading && !showForm" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ 'GENERAL.LOADING' | translate }}</span>
+    </div>
+    <p class="mt-2">{{ 'GENERAL.LOADING' | translate }}</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ 'GENERAL.ERROR_LOADING' | translate }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadProducts()">
+      {{ 'GENERAL.RETRY' | translate }}
+    </button>
+  </div>
+
+  <!-- Products Table -->
+  <div *ngIf="!loading && !error" class="card">
+    <div class="card-header">
+      <h5 class="mb-0">{{ 'ADMIN.PRODUCTS_LIST' | translate }} ({{ filteredProducts.length }})</h5>
+    </div>
+    <div class="card-body">
+      <div *ngIf="filteredProducts.length === 0" class="alert alert-info">
+        {{ 'ADMIN.NO_PRODUCTS' | translate }}
+      </div>
+
+      <div *ngIf="filteredProducts.length > 0" class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 80px;">{{ 'ADMIN.PRODUCT_IMAGE' | translate }}</th>
+              <th scope="col">{{ 'ADMIN.PRODUCT_NAME' | translate }}</th>
+              <th scope="col">{{ 'ADMIN.PRODUCT_CATEGORY' | translate }}</th>
+              <th scope="col" class="text-end">{{ 'ADMIN.PRODUCT_PRICE' | translate }}</th>
+              <th scope="col" class="text-center">{{ 'ADMIN.PRODUCT_STOCK' | translate }}</th>
+              <th scope="col" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts">
+              <!-- Product Image -->
+              <td>
+                <img [src]="product.imageUrl" class="img-thumbnail" [alt]="product.name" style="width: 50px; height: 50px; object-fit: cover;">
+              </td>
+
+              <!-- Product Name -->
+              <td>
+                <div class="fw-bold">{{ product.name }}</div>
+                <small class="text-muted d-block">ID: {{ product.id }}</small>
+                <div *ngIf="product.featured || product.newArrival" class="mt-1">
+                  <span *ngIf="product.featured" class="badge bg-success me-1">{{ 'ADMIN.FEATURED' | translate }}</span>
+                  <span *ngIf="product.newArrival" class="badge bg-primary">{{ 'ADMIN.NEW_ARRIVAL' | translate }}</span>
+                </div>
+              </td>
+
+              <!-- Product Category -->
+              <td>{{ product.category }}</td>
+
+              <!-- Product Price -->
+              <td class="text-end">
+                <span class="fw-bold">{{ product.price | currency }}</span>
+                <small *ngIf="product.discount" class="text-danger d-block">-{{ product.discount }}%</small>
+              </td>
+
+              <!-- Product Stock -->
+              <td class="text-center">
+                <span *ngIf="product.inStock" class="badge bg-success">{{ 'PRODUCT.IN_STOCK' | translate }} ({{ product.quantity }})</span>
+                <span *ngIf="!product.inStock" class="badge bg-danger">{{ 'PRODUCT.OUT_OF_STOCK' | translate }}</span>
+              </td>
+
+              <!-- Actions -->
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="editProduct(product)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

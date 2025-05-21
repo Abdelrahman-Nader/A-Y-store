@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">{{ 'GENERAL.TITLE' | translate }}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            {{ 'GENERAL.HOME' | translate }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/products" routerLinkActive="active">
+            {{ 'GENERAL.PRODUCTS' | translate }}
+          </a>
+        </li>
+        <!-- عرض رابط لوحة التحكم للمسؤولين فقط -->
+        <li class="nav-item" *ngIf="isAdmin">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">
+            {{ 'GENERAL.ADMIN' | translate }}
+          </a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center">
+        <!-- مكون تبديل اللغة -->
+        <app-language-switcher class="me-3"></app-language-switcher>
+
+        <!-- زر سلة التسوق -->
+        <a class="btn btn-outline-primary position-relative me-3" routerLink="/cart">
+          <i class="bi bi-cart"></i>
+          <span class="d-none d-md-inline ms-1">{{ 'GENERAL.CART' | translate }}</span>
+          <span *ngIf="cartItemCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ cartItemCount }}
+          </span>
+        </a>
+
+        <!-- قائمة الحساب -->
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person"></i>
+            <span class="d-none d-md-inline ms-1">{{ 'GENERAL.ACCOUNT' | translate }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+            <!-- إذا كان المستخدم مسجل الدخول -->
+            <div *ngIf="isLoggedIn">
+              <li><a class="dropdown-item" routerLink="/profile">{{ 'AUTH.PROFILE' | translate }}</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">{{ 'AUTH.LOGOUT' | translate }}</a></li>
+            </div>
+
+            <!-- إذا لم يكن المستخدم مسجل الدخول -->
+            <div *ngIf="!isLoggedIn">
+              <li><a class="dropdown-item" routerLink="/auth/login">{{ 'AUTH.LOGIN' | translate }}</a></li>
+              <li><a class="dropdown-item" routerLink="/auth/register">{{ 'AUTH.REGISTER' | translate }}</a></li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

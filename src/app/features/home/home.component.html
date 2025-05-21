@@ -1,0 +1,158 @@
+<div class="container">
+  <!-- Hero Section with Animation -->
+  <div class="row">
+    <div class="col-12">
+      <div class="hero-banner text-center my-4">
+        <div class="hero-content">
+          <h1 class="display-4 animated-title">{{ 'HOME.WELCOME' | translate }}</h1>
+          <p class="lead animated-text">{{ 'HOME.FEATURED_PRODUCTS' | translate }}</p>
+          <hr class="my-4 animated-line">
+          <p class="animated-text-delay">{{ 'HOME.NEW_ARRIVALS' | translate }}</p>
+          <a class="btn btn-primary btn-lg animated-button" routerLink="/products" role="button">
+            <i class="bi bi-arrow-right-circle me-2"></i>{{ 'HOME.VIEW_ALL' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading and Error States -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ 'GENERAL.LOADING' | translate }}</span>
+    </div>
+    <p class="mt-2">{{ 'GENERAL.LOADING' | translate }}</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ 'GENERAL.ERROR_LOADING' | translate }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadProducts()">
+      {{ 'GENERAL.RETRY' | translate }}
+    </button>
+  </div>
+
+  <!-- Featured Products Section -->
+  <div class="row mb-4" *ngIf="!loading && !error">
+    <div class="col-12">
+      <h2 class="text-center mb-4">{{ 'HOME.FEATURED_PRODUCTS' | translate }}</h2>
+    </div>
+    <!-- Product Cards will be dynamically loaded here -->
+    <div class="col-md-4 mb-4" *ngFor="let product of featuredProducts">
+      <div class="product-card h-100">
+        <div class="product-image-container">
+          <img [src]="product.imageUrl" class="card-img-top" alt="{{product.name}}">
+          <div class="product-overlay">
+            <div class="product-actions">
+              <button class="btn btn-light btn-sm rounded-circle action-btn" title="{{ 'PRODUCT.ADD_TO_CART' | translate }}">
+                <i class="bi bi-cart-plus"></i>
+              </button>
+              <a [routerLink]="['/products', product.id]" class="btn btn-light btn-sm rounded-circle action-btn" title="{{ 'PRODUCT.DETAILS' | translate }}">
+                <i class="bi bi-eye"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text description">{{product.description | slice:0:100}}...</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="price-container">
+              <strong class="product-price">{{product.price | currency}}</strong>
+              <span *ngIf="product.discount && product.discount > 0" class="discount-badge">
+                -{{product.discount}}%
+              </span>
+            </div>
+            <button class="btn btn-primary add-to-cart-btn">
+              <i class="bi bi-cart-plus me-1"></i>{{ 'PRODUCT.ADD_TO_CART' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Arrivals Section -->
+  <div class="row mb-4" *ngIf="!loading && !error">
+    <div class="col-12">
+      <h2 class="text-center mb-4">{{ 'HOME.NEW_ARRIVALS' | translate }}</h2>
+    </div>
+    <!-- Product Cards will be dynamically loaded here -->
+    <div class="col-md-3 mb-4" *ngFor="let product of newArrivals">
+      <div class="product-card new-arrival h-100">
+        <div class="product-image-container">
+          <img [src]="product.imageUrl" class="card-img-top" alt="{{product.name}}">
+          <span class="badge bg-primary position-absolute top-0 end-0 m-2 new-badge">{{ 'PRODUCT.NEW' | translate }}</span>
+          <div class="product-overlay">
+            <div class="product-actions">
+              <button class="btn btn-light btn-sm rounded-circle action-btn" title="{{ 'PRODUCT.ADD_TO_CART' | translate }}">
+                <i class="bi bi-cart-plus"></i>
+              </button>
+              <a [routerLink]="['/products', product.id]" class="btn btn-light btn-sm rounded-circle action-btn" title="{{ 'PRODUCT.DETAILS' | translate }}">
+                <i class="bi bi-eye"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text description">{{product.description | slice:0:80}}...</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="price-container">
+              <strong class="product-price">{{product.price | currency}}</strong>
+              <span *ngIf="product.discount && product.discount > 0" class="discount-badge">
+                -{{product.discount}}%
+              </span>
+            </div>
+            <button class="btn btn-outline-primary add-to-cart-btn">
+              <i class="bi bi-cart-plus me-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Special Offers Section -->
+  <div class="row mb-4" *ngIf="!loading && !error && specialOffers.length > 0">
+    <div class="col-12">
+      <h2 class="text-center mb-4">{{ 'HOME.OFFERS' | translate }}</h2>
+    </div>
+    <!-- Offer Cards will be dynamically loaded here -->
+    <div class="col-md-6 mb-4" *ngFor="let product of specialOffers">
+      <div class="special-offer-card h-100">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <div class="position-relative h-100">
+              <img [src]="product.imageUrl" class="img-fluid rounded-start h-100 object-fit-cover" alt="{{product.name}}">
+              <div class="offer-badge">-{{product.discount}}%</div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <div class="ribbon"><span>{{ 'HOME.OFFERS' | translate }}</span></div>
+              <h5 class="card-title">{{product.name}}</h5>
+              <p class="card-text description">{{product.description | slice:0:120}}...</p>
+              <div class="price-block">
+                <span class="original-price">{{product.price | currency}}</span>
+                <strong class="sale-price">
+                  {{ (product.price - (product.price * (product.discount || 0) / 100)) | currency }}
+                </strong>
+              </div>
+              <div class="offer-actions mt-3">
+                <a [routerLink]="['/products', product.id]" class="btn btn-outline-primary me-2">
+                  <i class="bi bi-eye me-1"></i>{{ 'PRODUCT.DETAILS' | translate }}
+                </a>
+                <button class="btn btn-danger">
+                  <i class="bi bi-cart-plus me-1"></i>{{ 'PRODUCT.ADD_TO_CART' | translate }}
+                </button>
+              </div>
+              <div class="offer-timer mt-2">
+                <i class="bi bi-clock me-1"></i> <span>عرض محدود</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

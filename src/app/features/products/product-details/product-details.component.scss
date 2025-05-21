@@ -1,0 +1,54 @@
+.product-image {
+  height: 400px;
+  object-fit: cover;
+}
+
+.color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #dee2e6;
+  transition: transform 0.2s, border-color 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.active {
+    border-color: #0d6efd;
+    transform: scale(1.1);
+  }
+}
+
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+// RTL specific styles
+:host-context([dir="rtl"]) {
+  .breadcrumb-item + .breadcrumb-item::before {
+    float: right;
+    padding-left: 0.5rem;
+    padding-right: 0;
+  }
+
+  .card-title, .card-text {
+    text-align: right;
+  }
+
+  .badge {
+    right: 0;
+    left: auto;
+  }
+}

@@ -1,0 +1,22 @@
+<div class="language-switcher">
+  <!-- زر تبديل اللغة -->
+  <button class="btn btn-sm" (click)="toggleLanguage()">
+    <i class="bi bi-translate me-1"></i>
+    {{ currentLanguage?.name }}
+  </button>
+  
+  <!-- قائمة منسدلة لاختيار اللغة -->
+  <div class="dropdown d-none">
+    <button class="btn btn-sm dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-translate me-1"></i>
+      {{ currentLanguage?.name }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+      <li *ngFor="let language of languages">
+        <a class="dropdown-item" href="javascript:void(0)" (click)="changeLanguage(language)" [class.active]="language.code === currentLanguage?.code">
+          {{ language.name }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

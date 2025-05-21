@@ -1,0 +1,147 @@
+<div class="container mt-4">
+  <h1 class="mb-4">{{ 'CART.TITLE' | translate }}</h1>
+
+  <!-- Empty Cart -->
+  <div *ngIf="cart.items.length === 0" class="text-center my-5">
+    <div class="empty-cart-icon mb-4">
+      <i class="bi bi-cart-x" style="font-size: 5rem;"></i>
+    </div>
+    <h3>{{ 'CART.EMPTY' | translate }}</h3>
+    <p class="text-muted">{{ 'CART.EMPTY_MESSAGE' | translate }}</p>
+    <button class="btn btn-primary mt-3" (click)="continueShopping()">
+      {{ 'CART.CONTINUE_SHOPPING' | translate }}
+    </button>
+  </div>
+
+  <!-- Cart with Items -->
+  <div *ngIf="cart.items.length > 0" class="row">
+    <!-- Cart Items -->
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">{{ 'CART.ITEMS' | translate }} ({{ cart.totalItems }})</h5>
+          <button class="btn btn-sm btn-outline-danger" (click)="clearCart()">
+            <i class="bi bi-trash me-1"></i>
+            {{ 'CART.CLEAR' | translate }}
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 100px;">{{ 'CART.PRODUCT' | translate }}</th>
+                  <th scope="col">{{ 'CART.DETAILS' | translate }}</th>
+                  <th scope="col" class="text-center">{{ 'PRODUCT.QUANTITY' | translate }}</th>
+                  <th scope="col" class="text-end">{{ 'PRODUCT.PRICE' | translate }}</th>
+                  <th scope="col" class="text-end">{{ 'CART.SUBTOTAL' | translate }}</th>
+                  <th scope="col" class="text-center">{{ 'CART.ACTIONS' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of cart.items; let i = index">
+                  <!-- Product Image -->
+                  <td>
+                    <img [src]="item.product.imageUrl" class="img-thumbnail" [alt]="item.product.name" style="width: 80px; height: 80px; object-fit: cover;">
+                  </td>
+
+                  <!-- Product Details -->
+                  <td>
+                    <h6 class="mb-1">{{ item.product.name }}</h6>
+                    <small class="text-muted d-block" *ngIf="item.size">{{ 'PRODUCT.SIZE' | translate }}: {{ item.size }}</small>
+                    <small class="text-muted d-block" *ngIf="item.color">{{ 'PRODUCT.COLOR' | translate }}: {{ item.color }}</small>
+                    <small class="text-muted d-block">{{ item.product.price | currency }}</small>
+                  </td>
+
+                  <!-- Quantity -->
+                  <td class="text-center">
+                    <div class="input-group input-group-sm" style="width: 120px; margin: 0 auto;">
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        (click)="updateQuantity(i, item.quantity - 1)"
+                        [disabled]="item.quantity <= 1"
+                      >
+                        <i class="bi bi-dash"></i>
+                      </button>
+                      <input type="text" class="form-control text-center" [value]="item.quantity" readonly>
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        (click)="updateQuantity(i, item.quantity + 1)"
+                      >
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+                  </td>
+
+                  <!-- Price -->
+                  <td class="text-end">
+                    {{ item.product.price | currency }}
+                  </td>
+
+                  <!-- Subtotal -->
+                  <td class="text-end fw-bold">
+                    {{ item.product.price * item.quantity | currency }}
+                  </td>
+
+                  <!-- Actions -->
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-outline-danger" (click)="removeItem(i)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-between align-items-center">
+            <a routerLink="/products" class="btn btn-outline-primary">
+              <i class="bi bi-arrow-left me-1"></i>
+              {{ 'CART.CONTINUE_SHOPPING' | translate }}
+            </a>
+            <button class="btn btn-primary" (click)="proceedToCheckout()">
+              {{ 'CART.PROCEED_TO_CHECKOUT' | translate }}
+              <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">{{ 'CART.ORDER_SUMMARY' | translate }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ 'CART.SUBTOTAL' | translate }}</span>
+            <span>{{ cart.totalPrice | currency }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ 'CART.SHIPPING' | translate }}</span>
+            <span>{{ 'CART.FREE' | translate }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ 'CART.TAX' | translate }}</span>
+            <span>{{ cart.totalPrice * 0.14 | currency }}</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-2 fw-bold">
+            <span>{{ 'CART.TOTAL' | translate }}</span>
+            <span>{{ cart.totalPrice + (cart.totalPrice * 0.14) | currency }}</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary w-100" (click)="proceedToCheckout()">
+            {{ 'CART.PROCEED_TO_CHECKOUT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

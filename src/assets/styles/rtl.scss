@@ -1,0 +1,205 @@
+/* 
+ * أنماط RTL العامة
+ * يتم تطبيق هذه الأنماط عندما تكون اللغة العربية نشطة
+ */
+
+[dir="rtl"] {
+  /* تبديل الهوامش */
+  .me-1 {
+    margin-right: 0 !important;
+    margin-left: 0.25rem !important;
+  }
+  
+  .me-2 {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+  }
+  
+  .me-3 {
+    margin-right: 0 !important;
+    margin-left: 1rem !important;
+  }
+  
+  .me-4 {
+    margin-right: 0 !important;
+    margin-left: 1.5rem !important;
+  }
+  
+  .me-5 {
+    margin-right: 0 !important;
+    margin-left: 3rem !important;
+  }
+  
+  .ms-1 {
+    margin-left: 0 !important;
+    margin-right: 0.25rem !important;
+  }
+  
+  .ms-2 {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+  }
+  
+  .ms-3 {
+    margin-left: 0 !important;
+    margin-right: 1rem !important;
+  }
+  
+  .ms-4 {
+    margin-left: 0 !important;
+    margin-right: 1.5rem !important;
+  }
+  
+  .ms-5 {
+    margin-left: 0 !important;
+    margin-right: 3rem !important;
+  }
+  
+  /* تبديل الحشوات */
+  .pe-1 {
+    padding-right: 0 !important;
+    padding-left: 0.25rem !important;
+  }
+  
+  .pe-2 {
+    padding-right: 0 !important;
+    padding-left: 0.5rem !important;
+  }
+  
+  .pe-3 {
+    padding-right: 0 !important;
+    padding-left: 1rem !important;
+  }
+  
+  .pe-4 {
+    padding-right: 0 !important;
+    padding-left: 1.5rem !important;
+  }
+  
+  .pe-5 {
+    padding-right: 0 !important;
+    padding-left: 3rem !important;
+  }
+  
+  .ps-1 {
+    padding-left: 0 !important;
+    padding-right: 0.25rem !important;
+  }
+  
+  .ps-2 {
+    padding-left: 0 !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  .ps-3 {
+    padding-left: 0 !important;
+    padding-right: 1rem !important;
+  }
+  
+  .ps-4 {
+    padding-left: 0 !important;
+    padding-right: 1.5rem !important;
+  }
+  
+  .ps-5 {
+    padding-left: 0 !important;
+    padding-right: 3rem !important;
+  }
+  
+  /* تبديل محاذاة النص */
+  .text-start {
+    text-align: right !important;
+  }
+  
+  .text-end {
+    text-align: left !important;
+  }
+  
+  /* تبديل الحدود */
+  .border-start {
+    border-left: none !important;
+    border-right: 1px solid #dee2e6 !important;
+  }
+  
+  .border-end {
+    border-right: none !important;
+    border-left: 1px solid #dee2e6 !important;
+  }
+  
+  /* تبديل الأيقونات */
+  .bi-arrow-right::before {
+    content: "\f12a"; /* رمز السهم لليسار */
+  }
+  
+  .bi-arrow-left::before {
+    content: "\f138"; /* رمز السهم لليمين */
+  }
+  
+  /* تبديل الموضع */
+  .start-0 {
+    left: auto !important;
+    right: 0 !important;
+  }
+  
+  .end-0 {
+    right: auto !important;
+    left: 0 !important;
+  }
+  
+  .start-50 {
+    left: auto !important;
+    right: 50% !important;
+  }
+  
+  .end-50 {
+    right: auto !important;
+    left: 50% !important;
+  }
+  
+  .start-100 {
+    left: auto !important;
+    right: 100% !important;
+  }
+  
+  .end-100 {
+    right: auto !important;
+    left: 100% !important;
+  }
+  
+  /* تبديل الترجمة */
+  .translate-middle-x {
+    transform: translateX(50%) !important;
+  }
+  
+  /* تبديل الشبكة */
+  .offset-1 {
+    margin-left: 0 !important;
+    margin-right: 8.33333% !important;
+  }
+  
+  .offset-2 {
+    margin-left: 0 !important;
+    margin-right: 16.66667% !important;
+  }
+  
+  .offset-3 {
+    margin-left: 0 !important;
+    margin-right: 25% !important;
+  }
+  
+  .offset-4 {
+    margin-left: 0 !important;
+    margin-right: 33.33333% !important;
+  }
+  
+  /* تبديل القوائم المنسدلة */
+  .dropdown-menu-end {
+    right: auto !important;
+    left: 0 !important;
+  }
+  
+  .dropdown-menu-start {
+    left: auto !important;
+    right: 0 !important;
+  }
+}

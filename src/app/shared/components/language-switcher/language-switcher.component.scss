@@ -1,0 +1,33 @@
+.language-switcher {
+  display: inline-block;
+  
+  .btn {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    color: inherit;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  .dropdown-menu {
+    min-width: 120px;
+    
+    .dropdown-item {
+      &.active {
+        background-color: #f8f9fa;
+        color: #212529;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+// RTL specific styles
+:host-context([dir="rtl"]) {
+  .me-1 {
+    margin-right: 0 !important;
+    margin-left: 0.25rem !important;
+  }
+}

@@ -1,0 +1,41 @@
+<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>{{ 'GENERAL.TITLE' | translate }}</h5>
+        <p class="text-muted">{{ 'HOME.WELCOME' | translate }}</p>
+      </div>
+      <div class="col-md-4">
+        <h5>{{ 'GENERAL.PRODUCTS' | translate }}</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-decoration-none">{{ 'HOME.NEW_ARRIVALS' | translate }}</a></li>
+          <li><a href="#" class="text-decoration-none">{{ 'HOME.FEATURED_PRODUCTS' | translate }}</a></li>
+          <li><a href="#" class="text-decoration-none">{{ 'HOME.OFFERS' | translate }}</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>{{ 'GENERAL.ACCOUNT' | translate }}</h5>
+        <ul class="list-unstyled">
+          <li><a routerLink="/auth/login" class="text-decoration-none">{{ 'AUTH.LOGIN' | translate }}</a></li>
+          <li><a routerLink="/auth/register" class="text-decoration-none">{{ 'AUTH.REGISTER' | translate }}</a></li>
+          <li><a routerLink="/cart" class="text-decoration-none">{{ 'GENERAL.CART' | translate }}</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-between">
+      <p>&copy; {{ currentYear }} {{ 'GENERAL.TITLE' | translate }}</p>
+      <div>
+        <a href="#" class="me-2 text-decoration-none">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="#" class="me-2 text-decoration-none">
+          <i class="bi bi-twitter"></i>
+        </a>
+        <a href="#" class="me-2 text-decoration-none">
+          <i class="bi bi-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

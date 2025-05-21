@@ -1,0 +1,173 @@
+<div class="container mt-4">
+  <h1 class="mb-4">{{ 'PRODUCT.ALL_PRODUCTS' | translate }}</h1>
+
+  <!-- Loading and Error States -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ 'GENERAL.LOADING' | translate }}</span>
+    </div>
+    <p class="mt-2">{{ 'GENERAL.LOADING' | translate }}</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ 'GENERAL.ERROR_LOADING' | translate }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadProducts()">
+      {{ 'GENERAL.RETRY' | translate }}
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading && !error" class="row">
+    <!-- Filters Sidebar -->
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">{{ 'PRODUCT.FILTERS' | translate }}</h5>
+        </div>
+        <div class="card-body">
+          <!-- Search -->
+          <div class="mb-3">
+            <label for="search" class="form-label">{{ 'GENERAL.SEARCH' | translate }}</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="search"
+                [placeholder]="'GENERAL.SEARCH' | translate"
+                [value]="searchTerm"
+                (input)="search($event)"
+              >
+              <button class="btn btn-outline-secondary" type="button" (click)="searchTerm = ''; applyFilters()">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Categories -->
+          <div class="mb-3">
+            <label class="form-label">{{ 'PRODUCT.CATEGORIES' | translate }}</label>
+            <div class="list-group">
+              <button
+                type="button"
+                class="list-group-item list-group-item-action"
+                [class.active]="selectedCategory === ''"
+                (click)="filterByCategory('')"
+              >
+                {{ 'PRODUCT.ALL_CATEGORIES' | translate }}
+              </button>
+              <button
+                *ngFor="let category of categories"
+                type="button"
+                class="list-group-item list-group-item-action"
+                [class.active]="selectedCategory === category"
+                (click)="filterByCategory(category)"
+              >
+                {{ category | titlecase }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Sort By -->
+          <div class="mb-3">
+            <label class="form-label">{{ 'PRODUCT.SORT_BY' | translate }}</label>
+            <div class="btn-group w-100">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                [class.active]="sortBy === 'name'"
+                (click)="sort('name')"
+              >
+                {{ 'PRODUCT.NAME' | translate }}
+                <i *ngIf="sortBy === 'name'" class="bi" [ngClass]="sortOrder === 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up'"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                [class.active]="sortBy === 'price'"
+                (click)="sort('price')"
+              >
+                {{ 'PRODUCT.PRICE' | translate }}
+                <i *ngIf="sortBy === 'price'" class="bi" [ngClass]="sortOrder === 'asc' ? 'bi-sort-numeric-down' : 'bi-sort-numeric-up'"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Reset Filters -->
+          <button class="btn btn-secondary w-100" (click)="resetFilters()">
+            {{ 'PRODUCT.RESET_FILTERS' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="col-md-9">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <p class="mb-0">{{ 'PRODUCT.SHOWING' | translate }} {{ filteredProducts.length }} {{ 'PRODUCT.OF' | translate }} {{ products.length }} {{ 'PRODUCT.PRODUCTS' | translate }}</p>
+      </div>
+
+      <!-- No Results -->
+      <div *ngIf="filteredProducts.length === 0" class="alert alert-info">
+        {{ 'PRODUCT.NO_PRODUCTS_FOUND' | translate }}
+      </div>
+
+      <!-- Products Grid -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col" *ngFor="let product of filteredProducts">
+          <div class="card h-100">
+            <!-- Product Badge -->
+            <div class="position-absolute top-0 start-0 p-2">
+              <span *ngIf="product.discount && product.discount > 0" class="badge bg-danger">
+                -{{ product.discount }}%
+              </span>
+              <span *ngIf="product.newArrival" class="badge bg-primary ms-1">
+                {{ 'PRODUCT.NEW' | translate }}
+              </span>
+            </div>
+
+            <!-- Product Image -->
+            <img [src]="product.imageUrl" class="card-img-top" [alt]="product.name">
+
+            <!-- Product Body -->
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text text-truncate">{{ product.description }}</p>
+
+              <!-- Price -->
+              <div class="d-flex align-items-center mb-3">
+                <span class="fs-5 fw-bold">{{ product.price | currency }}</span>
+                <span *ngIf="product.discount && product.discount > 0" class="text-decoration-line-through text-muted ms-2">
+                  {{ (product.price / (1 - product.discount / 100)) | currency }}
+                </span>
+              </div>
+
+              <!-- Stock Status -->
+              <p class="card-text">
+                <span *ngIf="product.inStock" class="badge bg-success">
+                  {{ 'PRODUCT.IN_STOCK' | translate }}
+                </span>
+                <span *ngIf="!product.inStock" class="badge bg-danger">
+                  {{ 'PRODUCT.OUT_OF_STOCK' | translate }}
+                </span>
+              </p>
+            </div>
+
+            <!-- Product Footer -->
+            <div class="card-footer d-flex justify-content-between">
+              <a [routerLink]="['/products', product.id]" class="btn btn-outline-primary">
+                {{ 'PRODUCT.DETAILS' | translate }}
+              </a>
+              <button
+                class="btn btn-primary"
+                [disabled]="!product.inStock"
+                (click)="addToCart(product)"
+              >
+                <i class="bi bi-cart-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

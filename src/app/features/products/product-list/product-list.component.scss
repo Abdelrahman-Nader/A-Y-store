@@ -1,0 +1,30 @@
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.list-group-item.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+// RTL specific styles
+:host-context([dir="rtl"]) {
+  .card-title, .card-text {
+    text-align: right;
+  }
+
+  .badge {
+    right: 0;
+    left: auto;
+  }
+}

@@ -1,0 +1,16 @@
+.footer {
+  margin-top: 2rem;
+  
+  h5 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  a {
+    color: #666;
+    
+    &:hover {
+      color: #333;
+    }
+  }
+}

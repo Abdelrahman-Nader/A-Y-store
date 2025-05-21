@@ -1,0 +1,89 @@
+// Variables
+$primary-color: #3f51b5;
+$secondary-color: #ff4081;
+$accent-color: #ff9800;
+
+.navbar {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to right, #ffffff, #f8f9fa);
+  border-bottom: 3px solid $primary-color;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: $primary-color;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: $secondary-color;
+    transform: scale(1.05);
+  }
+
+  &::after {
+    content: 'STORE';
+    position: absolute;
+    bottom: -5px;
+    right: 0;
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: $accent-color;
+    letter-spacing: 2px;
+  }
+}
+
+.nav-link {
+  font-weight: 500;
+  position: relative;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  transition: all 0.3s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: $primary-color;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  &:hover, &.active {
+    color: $primary-color;
+
+    &::after {
+      width: 80%;
+    }
+  }
+}
+
+.btn-outline-primary, .btn-outline-secondary {
+  border-width: 2px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// RTL specific styles
+:host-context([dir="rtl"]) {
+  .dropdown-menu {
+    text-align: right;
+  }
+
+  .navbar-brand {
+    &::after {
+      right: auto;
+      left: 0;
+    }
+  }
+}

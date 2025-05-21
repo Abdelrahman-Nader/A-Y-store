@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card mt-5">
+        <div class="card-header text-center">
+          <h4>{{ 'AUTH.REGISTER' | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="name" class="form-label">{{ 'AUTH.NAME' | translate }}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+              />
+              <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                <div *ngIf="f['name'].errors['required']">{{ 'AUTH.NAME_REQUIRED' | translate }}</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">{{ 'AUTH.EMAIL' | translate }}</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+              />
+              <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">{{ 'AUTH.EMAIL_REQUIRED' | translate }}</div>
+                <div *ngIf="f['email'].errors['email']">{{ 'AUTH.EMAIL_INVALID' | translate }}</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">{{ 'AUTH.PASSWORD' | translate }}</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                formControlName="password"
+                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+              />
+              <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                <div *ngIf="f['password'].errors['required']">{{ 'AUTH.PASSWORD_REQUIRED' | translate }}</div>
+                <div *ngIf="f['password'].errors['minlength']">{{ 'AUTH.PASSWORD_LENGTH' | translate }}</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">{{ 'AUTH.CONFIRM_PASSWORD' | translate }}</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+              />
+              <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+                <div *ngIf="f['confirmPassword'].errors['required']">{{ 'AUTH.CONFIRM_PASSWORD_REQUIRED' | translate }}</div>
+                <div *ngIf="f['confirmPassword'].errors['mustMatch']">{{ 'AUTH.PASSWORDS_MUST_MATCH' | translate }}</div>
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">{{ 'AUTH.REGISTER_BUTTON' | translate }}</button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer text-center">
+          <p class="mb-0">
+            {{ 'AUTH.HAVE_ACCOUNT' | translate }} <a routerLink="/auth/login">{{ 'AUTH.LOGIN' | translate }}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

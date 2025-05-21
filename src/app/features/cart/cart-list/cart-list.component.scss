@@ -1,0 +1,36 @@
+.empty-cart-icon {
+  color: #dee2e6;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+// RTL specific styles
+:host-context([dir="rtl"]) {
+  .me-1 {
+    margin-right: 0 !important;
+    margin-left: 0.25rem !important;
+  }
+
+  .ms-1 {
+    margin-left: 0 !important;
+    margin-right: 0.25rem !important;
+  }
+
+  .text-end {
+    text-align: left !important;
+  }
+
+  .bi-arrow-left:before {
+    content: "\f138"; // bi-arrow-right
+  }
+
+  .bi-arrow-right:before {
+    content: "\f12f"; // bi-arrow-left
+  }
+}

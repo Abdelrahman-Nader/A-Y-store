@@ -1,0 +1,369 @@
+// Variables
+$primary-color: #3f51b5;
+$secondary-color: #ff4081;
+$accent-color: #ff9800;
+$light-color: #f8f9fa;
+$dark-color: #212121;
+$success-color: #4caf50;
+$danger-color: #f44336;
+
+// Hero Banner
+.hero-banner {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  padding: 3rem 1rem;
+  border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    animation: pulse 15s infinite;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .animated-title {
+    animation: fadeInDown 1s ease-out;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .animated-text {
+    animation: fadeInUp 1s ease-out 0.3s both;
+    font-size: 1.25rem;
+  }
+
+  .animated-text-delay {
+    animation: fadeInUp 1s ease-out 0.6s both;
+  }
+
+  .animated-line {
+    width: 50%;
+    margin: 1.5rem auto;
+    border-color: rgba(255, 255, 255, 0.5);
+    animation: expandWidth 1.5s ease-out 0.5s both;
+  }
+
+  .animated-button {
+    animation: fadeIn 1s ease-out 0.9s both;
+    background-color: $accent-color;
+    border-color: $accent-color;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken($accent-color, 10%);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+// Product Cards
+.product-card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+
+    .product-overlay {
+      opacity: 1;
+    }
+
+    .card-title {
+      color: $primary-color;
+    }
+  }
+
+  .product-image-container {
+    position: relative;
+    overflow: hidden;
+
+    img {
+      transition: transform 0.5s ease;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  .product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .product-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $primary-color;
+      color: white;
+      transform: translateY(-3px);
+    }
+  }
+
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  .card-title {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
+  }
+
+  .description {
+    color: #6c757d;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .price-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .product-price {
+    color: $dark-color;
+    font-size: 1.1rem;
+  }
+
+  .discount-badge {
+    background-color: $danger-color;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+  }
+
+  .add-to-cart-btn {
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .new-badge {
+    animation: pulse 2s infinite;
+  }
+}
+
+// Special Offers
+.special-offer-card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: none;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .offer-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: $danger-color;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 50%;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    animation: pulse 2s infinite;
+  }
+
+  .ribbon {
+    position: absolute;
+    right: -5px;
+    top: 10px;
+    z-index: 1;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+    text-align: right;
+
+    span {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      line-height: 30px;
+      transform: rotate(45deg);
+      width: 150px;
+      display: block;
+      background: $accent-color;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      position: absolute;
+      top: 30px;
+      right: -30px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0px;
+        top: 100%;
+        z-index: -1;
+        border-left: 3px solid darken($accent-color, 15%);
+        border-right: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid darken($accent-color, 15%);
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0px;
+        top: 100%;
+        z-index: -1;
+        border-left: 3px solid transparent;
+        border-right: 3px solid darken($accent-color, 15%);
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid darken($accent-color, 15%);
+      }
+    }
+  }
+
+  .price-block {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .original-price {
+    text-decoration: line-through;
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  .sale-price {
+    color: $danger-color;
+    font-size: 1.25rem;
+  }
+
+  .offer-timer {
+    color: $accent-color;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+// Animations
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 50%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// RTL specific styles
+:host-context([dir="rtl"]) {
+  .card-title, .card-text {
+    text-align: right;
+  }
+
+  .ribbon {
+    left: -5px;
+    right: auto;
+    text-align: left;
+
+    span {
+      transform: rotate(-45deg);
+      left: -30px;
+      right: auto;
+    }
+  }
+
+  .offer-badge {
+    right: 10px;
+    left: auto;
+  }
+}

@@ -1,0 +1,339 @@
+{
+  "products": [
+    {
+      "id": 2,
+      "name": "بنطلون جينز كلاسيكي",
+      "description": "بنطلون جينز كلاسيكي بقصة مستقيمة، مناسب لجميع المناسبات",
+      "price": 49.99,
+      "imageUrl": "/assets/image/photo (2).jpg",
+      "category": "pants",
+      "inStock": true,
+      "quantity": 30,
+      "sizes": [
+        "30",
+        "32",
+        "34",
+        "36"
+      ],
+      "colors": [
+        "blue",
+        "black"
+      ],
+      "featured": true,
+      "newArrival": false,
+      "discount": 10,
+      "rating": 4.2
+    },
+    {
+      "id": 3,
+      "name": "تيشيرت أبيض بسيط",
+      "description": "تيشيرت أبيض بسيط مصنوع من القطن المصري الفاخر",
+      "price": 19.99,
+      "imageUrl": "/assets/image/photo (3).jpg",
+      "category": "t-shirts",
+      "inStock": true,
+      "quantity": 100,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "white",
+        "black",
+        "gray",
+        "red"
+      ],
+      "featured": true,
+      "newArrival": false,
+      "discount": 0,
+      "rating": 4
+    },
+    {
+      "id": 4,
+      "name": "سترة شتوية سوداء",
+      "description": "سترة شتوية سوداء مبطنة، مثالية للطقس البارد",
+      "price": 89.99,
+      "imageUrl": "/assets/image/photo (4).jpg",
+      "category": "jackets",
+      "inStock": true,
+      "quantity": 20,
+      "sizes": [
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "black",
+        "navy"
+      ],
+      "featured": false,
+      "newArrival": true,
+      "discount": 0,
+      "rating": 4.8
+    },
+    {
+      "id": 5,
+      "name": "قميص رسمي أبيض",
+      "description": "قميص رسمي أبيض مناسب للمناسبات الرسمية والعمل",
+      "price": 39.99,
+      "imageUrl": "/assets/image/photo (5).jpg",
+      "category": "shirts",
+      "inStock": true,
+      "quantity": 40,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "white"
+      ],
+      "featured": false,
+      "newArrival": true,
+      "discount": 0,
+      "rating": 4.3
+    },
+    {
+      "id": 6,
+      "name": "بنطلون رياضي رمادي",
+      "description": "بنطلون رياضي رمادي مريح، مثالي للتمارين الرياضية",
+      "price": 34.99,
+      "imageUrl": "/assets/image/photo (6).jpg",
+      "category": "pants",
+      "inStock": true,
+      "quantity": 25,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "gray",
+        "black"
+      ],
+      "featured": false,
+      "newArrival": true,
+      "discount": 0,
+      "rating": 4.1
+    },
+    {
+      "id": 7,
+      "name": "معطف طويل بني",
+      "description": "معطف طويل بني أنيق، مثالي للخريف والشتاء",
+      "price": 129.99,
+      "imageUrl": "/assets/image/photo (7).jpg",
+      "category": "jackets",
+      "inStock": true,
+      "quantity": 15,
+      "sizes": [
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "brown"
+      ],
+      "featured": false,
+      "newArrival": true,
+      "discount": 15,
+      "rating": 4.7
+    },
+    {
+      "id": 8,
+      "name": "تيشيرت مطبوع ملون",
+      "description": "تيشيرت مطبوع بتصميم عصري وألوان زاهية",
+      "price": 24.99,
+      "imageUrl": "/assets/image/photo (8).jpg",
+      "category": "t-shirts",
+      "inStock": true,
+      "quantity": 60,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "blue",
+        "red",
+        "green"
+      ],
+      "featured": false,
+      "newArrival": true,
+      "discount": 0,
+      "rating": 4.4
+    },
+    {
+      "id": 9,
+      "name": "تيشرت اطفالي",
+      "description": "ملابس صيفي جميله قطنيه لطيفة على بشرة طفلك",
+      "price": 500,
+      "imageUrl": "/assets/image/photo (9).jpg",
+      "category": "اطفال",
+      "inStock": true,
+      "quantity": 3,
+      "sizes": [
+        "s"
+      ],
+      "colors": [
+        "اخضر",
+        "احمر",
+        "ازرق"
+      ],
+      "featured": false,
+      "newArrival": true,
+      "discount": 0
+    },
+    {
+      "id": 10,
+      "name": "ترنج اطفالي",
+      "description": "ترنج قطن",
+      "price": 600,
+      "imageUrl": "ب",
+      "category": "اطفال",
+      "inStock": true,
+      "quantity": 2,
+      "sizes": [
+        "s"
+      ],
+      "colors": [
+        "اخضر",
+        "احمر",
+        "ازرق"
+      ],
+      "featured": false,
+      "newArrival": false,
+      "discount": 0
+    },
+    {
+      "id": "799c",
+      "name": "ترنج اطفالي2",
+      "description": "ترنج اطفالي بناتي",
+      "price": 360,
+      "imageUrl": "ب",
+      "category": "اطفال",
+      "inStock": true,
+      "quantity": 0,
+      "sizes": [
+        "s"
+      ],
+      "colors": [
+        "اخضر",
+        "احمر",
+        "ازرق"
+      ],
+      "featured": false,
+      "newArrival": false,
+      "discount": 0
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "أحمد محمد",
+      "email": "ahmed@example.com",
+      "role": "customer"
+    },
+    {
+      "id": "2",
+      "name": "مدير النظام",
+      "email": "admin@example.com",
+      "role": "admin"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "userId": 1,
+      "items": [
+        {
+          "product": {
+            "id": 1,
+            "name": "قميص كاجوال أزرق",
+            "price": 29.99,
+            "imageUrl": "/assets/image/photo (1).jpg"
+          },
+          "quantity": 2,
+          "size": "L",
+          "color": "blue"
+        },
+        {
+          "product": {
+            "id": 3,
+            "name": "تيشيرت أبيض بسيط",
+            "price": 19.99,
+            "imageUrl": "/assets/image/photo (3).jpg"
+          },
+          "quantity": 1,
+          "size": "M",
+          "color": "white"
+        }
+      ],
+      "totalPrice": 79.97,
+      "shippingAddress": {
+        "fullName": "أحمد محمد",
+        "address": "شارع النصر 123",
+        "city": "القاهرة",
+        "state": "القاهرة",
+        "postalCode": "12345",
+        "country": "مصر",
+        "phone": "01234567890"
+      },
+      "paymentMethod": "cash_on_delivery",
+      "status": "delivered",
+      "createdAt": "2023-01-15T10:30:00.000Z",
+      "updatedAt": "2023-01-18T14:20:00.000Z"
+    },
+    {
+      "id": "7c92",
+      "items": [
+        {
+          "product": {
+            "id": 2,
+            "name": "بنطلون جينز كلاسيكي",
+            "description": "بنطلون جينز كلاسيكي بقصة مستقيمة، مناسب لجميع المناسبات",
+            "price": 49.99,
+            "imageUrl": "/assets/image/photo (2).jpg",
+            "category": "pants",
+            "inStock": true,
+            "quantity": 30,
+            "sizes": [
+              "30",
+              "32",
+              "34",
+              "36"
+            ],
+            "colors": [
+              "blue",
+              "black"
+            ],
+            "featured": true,
+            "newArrival": false,
+            "discount": 10,
+            "rating": 4.2
+          },
+          "quantity": 1,
+          "size": "30",
+          "color": "blue"
+        }
+      ],
+      "totalPrice": 49.99,
+      "shippingAddress": {
+        "fullName": "Abdelrahman Nader Mohamed",
+        "address": "5 عطفة الحلال درب الابراهيمية- الازبكية - القاهرة",
+        "city": "egypt",
+        "state": "Not Applicable",
+        "postalCode": "22222",
+        "country": "مصر",
+        "phone": "01277687714"
+      },
+      "paymentMethod": "vodafone_cash",
+      "userId": 1
+    }
+  ]
+}

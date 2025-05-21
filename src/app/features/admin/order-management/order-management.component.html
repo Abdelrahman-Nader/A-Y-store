@@ -1,0 +1,259 @@
+<div class="container mt-4">
+  <h1 class="mb-4">{{ 'ADMIN.ORDER_MANAGEMENT' | translate }}</h1>
+
+  <!-- Search and Filter -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="{{ 'GENERAL.SEARCH' | translate }}"
+              [(ngModel)]="searchTerm"
+              (input)="search()"
+            >
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              (click)="clearSearch()"
+              [disabled]="!searchTerm"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            <button class="btn btn-primary" type="button" (click)="search()">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-md-end">
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                [class.active]="statusFilter === ''"
+                (click)="filterByStatus('')"
+              >
+                {{ 'ADMIN.ALL_ORDERS' | translate }}
+              </button>
+              <button
+                *ngFor="let status of orderStatuses | keyvalue"
+                type="button"
+                class="btn btn-outline-secondary"
+                [class.active]="statusFilter === status.value"
+                (click)="filterByStatus(status.value)"
+              >
+                {{ 'ADMIN.STATUS_' + status.value.toUpperCase() | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading and Error States -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ 'GENERAL.LOADING' | translate }}</span>
+    </div>
+    <p class="mt-2">{{ 'GENERAL.LOADING' | translate }}</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ 'GENERAL.ERROR_LOADING' | translate }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadOrders()">
+      {{ 'GENERAL.RETRY' | translate }}
+    </button>
+  </div>
+
+  <!-- Orders Table -->
+  <div *ngIf="!loading && !error" class="card">
+    <div class="card-header">
+      <h5 class="mb-0">{{ 'ADMIN.ORDERS_LIST' | translate }} ({{ filteredOrders.length }})</h5>
+    </div>
+    <div class="card-body">
+      <div *ngIf="filteredOrders.length === 0" class="alert alert-info">
+        {{ 'ADMIN.NO_ORDERS' | translate }}
+      </div>
+
+      <div *ngIf="filteredOrders.length > 0" class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'ADMIN.ORDER_ID' | translate }}</th>
+              <th scope="col">{{ 'ADMIN.CUSTOMER_NAME' | translate }}</th>
+              <th scope="col">{{ 'ADMIN.ORDER_DATE' | translate }}</th>
+              <th scope="col" class="text-end">{{ 'ADMIN.ORDER_TOTAL' | translate }}</th>
+              <th scope="col" class="text-center">{{ 'ADMIN.ORDER_STATUS' | translate }}</th>
+              <th scope="col" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of filteredOrders">
+              <!-- Order ID -->
+              <td>{{ order.id }}</td>
+
+              <!-- Customer Name -->
+              <td>
+                <div>{{ order.shippingAddress.fullName }}</div>
+                <small class="text-muted">{{ order.shippingAddress.phone }}</small>
+              </td>
+
+              <!-- Order Date -->
+              <td>{{ formatDate(order.createdAt) }}</td>
+
+              <!-- Order Total -->
+              <td class="text-end fw-bold">{{ order.totalPrice | currency }}</td>
+
+              <!-- Order Status -->
+              <td class="text-center">
+                <span class="badge" [ngClass]="getStatusClass(order.status)">
+                  {{ 'ADMIN.STATUS_' + order.status.toUpperCase() | translate }}
+                </span>
+              </td>
+
+              <!-- Actions -->
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-primary" (click)="viewOrderDetails(order)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Details Modal -->
+  <div *ngIf="showOrderDetails && selectedOrder" class="order-details-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ 'ADMIN.ORDER_DETAILS' | translate }} #{{ selectedOrder.id }}</h5>
+          <button type="button" class="btn-close" (click)="closeOrderDetails()"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Order Info -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h6>{{ 'ADMIN.CUSTOMER_INFO' | translate }}</h6>
+              <p class="mb-1"><strong>{{ 'ADMIN.CUSTOMER_NAME' | translate }}:</strong> {{ selectedOrder.shippingAddress.fullName }}</p>
+              <p class="mb-1"><strong>{{ 'CHECKOUT.PHONE' | translate }}:</strong> {{ selectedOrder.shippingAddress.phone }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6>{{ 'ADMIN.ORDER_INFO' | translate }}</h6>
+              <p class="mb-1"><strong>{{ 'ADMIN.ORDER_DATE' | translate }}:</strong> {{ formatDate(selectedOrder.createdAt) }}</p>
+              <p class="mb-1"><strong>{{ 'ADMIN.LAST_UPDATE' | translate }}:</strong> {{ formatDate(selectedOrder.updatedAt) }}</p>
+              <p class="mb-1">
+                <strong>{{ 'ADMIN.ORDER_STATUS' | translate }}:</strong>
+                <span class="badge ms-2" [ngClass]="getStatusClass(selectedOrder.status)">
+                  {{ 'ADMIN.STATUS_' + selectedOrder.status.toUpperCase() | translate }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Shipping Address -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h6>{{ 'CHECKOUT.SHIPPING_INFO' | translate }}</h6>
+              <p class="mb-1">{{ selectedOrder.shippingAddress.address }}</p>
+              <p class="mb-1">{{ selectedOrder.shippingAddress.city }}, {{ selectedOrder.shippingAddress.state }} {{ selectedOrder.shippingAddress.postalCode }}</p>
+              <p class="mb-1">{{ selectedOrder.shippingAddress.country }}</p>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h6>{{ 'CHECKOUT.PAYMENT_METHOD' | translate }}</h6>
+              <p class="mb-1">
+                <span *ngIf="selectedOrder.paymentMethod === 'cash_on_delivery'">{{ 'CHECKOUT.CASH_ON_DELIVERY' | translate }}</span>
+                <span *ngIf="selectedOrder.paymentMethod === 'insta_pay'">{{ 'CHECKOUT.INSTA_PAY' | translate }}</span>
+                <span *ngIf="selectedOrder.paymentMethod === 'vodafone_cash'">{{ 'CHECKOUT.VODAFONE_CASH' | translate }}</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Order Items -->
+          <h6>{{ 'ADMIN.ORDER_ITEMS' | translate }}</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>{{ 'ADMIN.PRODUCT' | translate }}</th>
+                  <th class="text-center">{{ 'PRODUCT.QUANTITY' | translate }}</th>
+                  <th class="text-end">{{ 'PRODUCT.PRICE' | translate }}</th>
+                  <th class="text-end">{{ 'CART.SUBTOTAL' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of selectedOrder.items">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img [src]="item.product.imageUrl" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                      <div>
+                        <div>{{ item.product.name }}</div>
+                        <small *ngIf="item.size || item.color" class="text-muted">
+                          <span *ngIf="item.size">{{ item.size }}</span>
+                          <span *ngIf="item.size && item.color"> / </span>
+                          <span *ngIf="item.color">{{ item.color }}</span>
+                        </small>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-center">{{ item.quantity }}</td>
+                  <td class="text-end">{{ item.product.price | currency }}</td>
+                  <td class="text-end">{{ item.product.price * item.quantity | currency }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="text-end"><strong>{{ 'CART.SUBTOTAL' | translate }}</strong></td>
+                  <td class="text-end">{{ selectedOrder.totalPrice | currency }}</td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="text-end"><strong>{{ 'CART.SHIPPING' | translate }}</strong></td>
+                  <td class="text-end">{{ 'CART.FREE' | translate }}</td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="text-end"><strong>{{ 'CART.TOTAL' | translate }}</strong></td>
+                  <td class="text-end"><strong>{{ selectedOrder.totalPrice | currency }}</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- Update Status Buttons -->
+          <div class="dropdown me-auto">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="updateStatusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ 'ADMIN.UPDATE_STATUS' | translate }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="updateStatusDropdown">
+              <li *ngFor="let status of orderStatuses | keyvalue">
+                <a
+                  class="dropdown-item"
+                  href="javascript:void(0)"
+                  (click)="updateOrderStatus(selectedOrder.id, status.value)"
+                  [class.active]="selectedOrder.status === status.value"
+                >
+                  {{ 'ADMIN.STATUS_' + status.value.toUpperCase() | translate }}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <button type="button" class="btn btn-secondary" (click)="closeOrderDetails()">
+            {{ 'ADMIN.CLOSE' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

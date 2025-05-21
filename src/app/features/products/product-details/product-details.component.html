@@ -1,0 +1,187 @@
+<div class="container mt-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">{{ 'GENERAL.HOME' | translate }}</a></li>
+      <li class="breadcrumb-item"><a routerLink="/products">{{ 'GENERAL.PRODUCTS' | translate }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ product?.name || 'Loading...' }}</li>
+    </ol>
+  </nav>
+
+  <!-- Loading and Error States -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ 'GENERAL.LOADING' | translate }}</span>
+    </div>
+    <p class="mt-2">{{ 'GENERAL.LOADING' | translate }}</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ 'GENERAL.ERROR_LOADING' | translate }}
+    <button *ngIf="product" class="btn btn-sm btn-outline-danger ms-2" (click)="loadProduct(product.id)">
+      {{ 'GENERAL.RETRY' | translate }}
+    </button>
+    <a routerLink="/products" class="btn btn-sm btn-primary ms-2">
+      {{ 'PRODUCT.BACK_TO_PRODUCTS' | translate }}
+    </a>
+  </div>
+
+  <!-- Product Details -->
+  <div *ngIf="!loading && !error && product" class="row">
+    <!-- Product Image -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="position-absolute top-0 start-0 p-2">
+          <span *ngIf="product.discount && product.discount > 0" class="badge bg-danger">
+            -{{ product.discount }}%
+          </span>
+          <span *ngIf="product.newArrival" class="badge bg-primary ms-1">
+            {{ 'PRODUCT.NEW' | translate }}
+          </span>
+        </div>
+        <img [src]="product.imageUrl" class="card-img-top product-image" [alt]="product.name">
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h1 class="mb-3">{{ product.name }}</h1>
+
+      <!-- Price -->
+      <div class="d-flex align-items-center mb-3">
+        <span class="fs-3 fw-bold">{{ getDiscountedPrice() | currency }}</span>
+        <span *ngIf="product.discount && product.discount > 0" class="text-decoration-line-through text-muted ms-3 fs-5">
+          {{ product.price | currency }}
+        </span>
+      </div>
+
+      <!-- Stock Status -->
+      <p class="mb-3">
+        <span *ngIf="product.inStock" class="badge bg-success">
+          {{ 'PRODUCT.IN_STOCK' | translate }}
+        </span>
+        <span *ngIf="!product.inStock" class="badge bg-danger">
+          {{ 'PRODUCT.OUT_OF_STOCK' | translate }}
+        </span>
+      </p>
+
+      <!-- Description -->
+      <p class="mb-4">{{ product.description }}</p>
+
+      <!-- Sizes -->
+      <div *ngIf="product.sizes && product.sizes.length > 0" class="mb-3">
+        <h5>{{ 'PRODUCT.SIZE' | translate }}</h5>
+        <div class="btn-group">
+          <button
+            *ngFor="let size of product.sizes"
+            type="button"
+            class="btn btn-outline-secondary"
+            [class.active]="selectedSize === size"
+            (click)="selectSize(size)"
+          >
+            {{ size }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Colors -->
+      <div *ngIf="product.colors && product.colors.length > 0" class="mb-4">
+        <h5>{{ 'PRODUCT.COLOR' | translate }}</h5>
+        <div class="d-flex">
+          <div
+            *ngFor="let color of product.colors"
+            class="color-option me-2"
+            [style.background-color]="color"
+            [class.active]="selectedColor === color"
+            (click)="selectColor(color)"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Quantity -->
+      <div class="mb-4">
+        <h5>{{ 'PRODUCT.QUANTITY' | translate }}</h5>
+        <div class="input-group" style="width: 150px;">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="decrementQuantity()"
+            [disabled]="quantity <= 1"
+          >
+            <i class="bi bi-dash"></i>
+          </button>
+          <input type="text" class="form-control text-center" [value]="quantity" readonly>
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="incrementQuantity()"
+          >
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Add to Cart Button -->
+      <button
+        class="btn btn-primary btn-lg mb-3"
+        [disabled]="!product.inStock"
+        (click)="addToCart()"
+      >
+        <i class="bi bi-cart-plus me-2"></i>
+        {{ 'PRODUCT.ADD_TO_CART' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div *ngIf="!loading && !error && product && relatedProducts.length > 0" class="mt-5">
+    <h2 class="mb-4">{{ 'PRODUCT.RELATED_PRODUCTS' | translate }}</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+      <div class="col" *ngFor="let relatedProduct of relatedProducts">
+        <div class="card h-100">
+          <!-- Product Badge -->
+          <div class="position-absolute top-0 start-0 p-2">
+            <span *ngIf="relatedProduct.discount && relatedProduct.discount > 0" class="badge bg-danger">
+              -{{ relatedProduct.discount }}%
+            </span>
+            <span *ngIf="relatedProduct.newArrival" class="badge bg-primary ms-1">
+              {{ 'PRODUCT.NEW' | translate }}
+            </span>
+          </div>
+
+          <!-- Product Image -->
+          <img [src]="relatedProduct.imageUrl" class="card-img-top" [alt]="relatedProduct.name">
+
+          <!-- Product Body -->
+          <div class="card-body">
+            <h5 class="card-title">{{ relatedProduct.name }}</h5>
+            <p class="card-text text-truncate">{{ relatedProduct.description }}</p>
+
+            <!-- Price -->
+            <div class="d-flex align-items-center mb-3">
+              <span class="fs-5 fw-bold">{{ relatedProduct.price | currency }}</span>
+              <span *ngIf="relatedProduct.discount && relatedProduct.discount > 0" class="text-decoration-line-through text-muted ms-2">
+                {{ (relatedProduct.price / (1 - relatedProduct.discount / 100)) | currency }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Product Footer -->
+          <div class="card-footer d-flex justify-content-between">
+            <a [routerLink]="['/products', relatedProduct.id]" class="btn btn-outline-primary">
+              {{ 'PRODUCT.DETAILS' | translate }}
+            </a>
+            <button
+              class="btn btn-primary"
+              [disabled]="!relatedProduct.inStock"
+              (click)="cartService.addToCart(relatedProduct, 1)"
+            >
+              <i class="bi bi-cart-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

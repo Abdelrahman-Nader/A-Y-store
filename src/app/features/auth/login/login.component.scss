@@ -1,0 +1,14 @@
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+// RTL specific styles
+:host-context([dir="rtl"]) {
+  .card-header, .card-body, .card-footer {
+    text-align: right;
+  }
+  
+  .invalid-feedback {
+    text-align: right;
+  }
+}

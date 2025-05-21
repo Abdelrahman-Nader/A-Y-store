@@ -1,0 +1,322 @@
+<div class="container mt-4">
+  <h1 class="mb-4">{{ 'CHECKOUT.TITLE' | translate }}</h1>
+
+  <!-- Checkout Steps -->
+  <div class="checkout-steps mb-4">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+          <div class="step-number">1</div>
+          <div class="step-title">{{ 'CHECKOUT.SHIPPING' | translate }}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+          <div class="step-number">2</div>
+          <div class="step-title">{{ 'CHECKOUT.PAYMENT' | translate }}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step" [class.active]="currentStep >= 3">
+          <div class="step-number">3</div>
+          <div class="step-title">{{ 'CHECKOUT.CONFIRMATION' | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="row">
+    <!-- Checkout Form -->
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <!-- Step 1: Shipping Information -->
+          <div *ngIf="currentStep === 1">
+            <h3 class="mb-4">{{ 'CHECKOUT.SHIPPING_INFO' | translate }}</h3>
+
+            <form [formGroup]="shippingForm">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="fullName" class="form-label">{{ 'CHECKOUT.FULL_NAME' | translate }}</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fullName"
+                    formControlName="fullName"
+                    [ngClass]="{ 'is-invalid': f['fullName'].touched && f['fullName'].errors }"
+                  >
+                  <div *ngIf="f['fullName'].touched && f['fullName'].errors" class="invalid-feedback">
+                    <div *ngIf="f['fullName'].errors['required']">{{ 'CHECKOUT.FULL_NAME_REQUIRED' | translate }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="address" class="form-label">{{ 'CHECKOUT.ADDRESS' | translate }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  formControlName="address"
+                  [ngClass]="{ 'is-invalid': f['address'].touched && f['address'].errors }"
+                >
+                <div *ngIf="f['address'].touched && f['address'].errors" class="invalid-feedback">
+                  <div *ngIf="f['address'].errors['required']">{{ 'CHECKOUT.ADDRESS_REQUIRED' | translate }}</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="city" class="form-label">{{ 'CHECKOUT.CITY' | translate }}</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="city"
+                    formControlName="city"
+                    [ngClass]="{ 'is-invalid': f['city'].touched && f['city'].errors }"
+                  >
+                  <div *ngIf="f['city'].touched && f['city'].errors" class="invalid-feedback">
+                    <div *ngIf="f['city'].errors['required']">{{ 'CHECKOUT.CITY_REQUIRED' | translate }}</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="state" class="form-label">{{ 'CHECKOUT.STATE' | translate }}</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="state"
+                    formControlName="state"
+                    [ngClass]="{ 'is-invalid': f['state'].touched && f['state'].errors }"
+                  >
+                  <div *ngIf="f['state'].touched && f['state'].errors" class="invalid-feedback">
+                    <div *ngIf="f['state'].errors['required']">{{ 'CHECKOUT.STATE_REQUIRED' | translate }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="postalCode" class="form-label">{{ 'CHECKOUT.POSTAL_CODE' | translate }}</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="postalCode"
+                    formControlName="postalCode"
+                    [ngClass]="{ 'is-invalid': f['postalCode'].touched && f['postalCode'].errors }"
+                  >
+                  <div *ngIf="f['postalCode'].touched && f['postalCode'].errors" class="invalid-feedback">
+                    <div *ngIf="f['postalCode'].errors['required']">{{ 'CHECKOUT.POSTAL_CODE_REQUIRED' | translate }}</div>
+                    <div *ngIf="f['postalCode'].errors['pattern']">{{ 'CHECKOUT.POSTAL_CODE_INVALID' | translate }}</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="country" class="form-label">{{ 'CHECKOUT.COUNTRY' | translate }}</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="country"
+                    formControlName="country"
+                    [ngClass]="{ 'is-invalid': f['country'].touched && f['country'].errors }"
+                  >
+                  <div *ngIf="f['country'].touched && f['country'].errors" class="invalid-feedback">
+                    <div *ngIf="f['country'].errors['required']">{{ 'CHECKOUT.COUNTRY_REQUIRED' | translate }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="phone" class="form-label">{{ 'CHECKOUT.PHONE' | translate }}</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  formControlName="phone"
+                  [ngClass]="{ 'is-invalid': f['phone'].touched && f['phone'].errors }"
+                >
+                <div *ngIf="f['phone'].touched && f['phone'].errors" class="invalid-feedback">
+                  <div *ngIf="f['phone'].errors['required']">{{ 'CHECKOUT.PHONE_REQUIRED' | translate }}</div>
+                  <div *ngIf="f['phone'].errors['pattern']">{{ 'CHECKOUT.PHONE_INVALID' | translate }}</div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 2: Payment Method -->
+          <div *ngIf="currentStep === 2">
+            <h3 class="mb-4">{{ 'CHECKOUT.PAYMENT_METHOD' | translate }}</h3>
+
+            <div class="payment-methods">
+              <div class="form-check mb-3">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="paymentMethod"
+                  id="cashOnDelivery"
+                  [checked]="paymentMethod === paymentMethods.CASH_ON_DELIVERY"
+                  (change)="selectPaymentMethod(paymentMethods.CASH_ON_DELIVERY)"
+                >
+                <label class="form-check-label" for="cashOnDelivery">
+                  <i class="bi bi-cash me-2"></i>
+                  {{ 'CHECKOUT.CASH_ON_DELIVERY' | translate }}
+                </label>
+                <small *ngIf="paymentMethod === paymentMethods.CASH_ON_DELIVERY" class="d-block text-muted mt-1">
+                  {{ 'CHECKOUT.CASH_ON_DELIVERY_DESC' | translate }}
+                </small>
+              </div>
+
+              <div class="form-check mb-3">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="paymentMethod"
+                  id="instaPay"
+                  [checked]="paymentMethod === paymentMethods.INSTA_PAY"
+                  (change)="selectPaymentMethod(paymentMethods.INSTA_PAY)"
+                >
+                <label class="form-check-label" for="instaPay">
+                  <i class="bi bi-credit-card me-2"></i>
+                  {{ 'CHECKOUT.INSTA_PAY' | translate }}
+                </label>
+                <small *ngIf="paymentMethod === paymentMethods.INSTA_PAY" class="d-block text-muted mt-1">
+                  {{ 'CHECKOUT.INSTA_PAY_DESC' | translate }}
+                </small>
+              </div>
+
+              <div class="form-check mb-3">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="paymentMethod"
+                  id="vodafoneCash"
+                  [checked]="paymentMethod === paymentMethods.VODAFONE_CASH"
+                  (change)="selectPaymentMethod(paymentMethods.VODAFONE_CASH)"
+                >
+                <label class="form-check-label" for="vodafoneCash">
+                  <i class="bi bi-phone me-2"></i>
+                  {{ 'CHECKOUT.VODAFONE_CASH' | translate }}
+                </label>
+                <small *ngIf="paymentMethod === paymentMethods.VODAFONE_CASH" class="d-block text-muted mt-1">
+                  {{ 'CHECKOUT.VODAFONE_CASH_DESC' | translate }}
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Order Confirmation -->
+          <div *ngIf="currentStep === 3">
+            <div *ngIf="orderPlaced" class="text-center my-5">
+              <div class="success-icon mb-4">
+                <i class="bi bi-check-circle" style="font-size: 5rem; color: #28a745;"></i>
+              </div>
+              <h3>{{ 'CHECKOUT.ORDER_PLACED' | translate }}</h3>
+              <p class="text-muted">{{ 'CHECKOUT.ORDER_PLACED_DESC' | translate }}</p>
+              <button class="btn btn-primary mt-3" (click)="continueShopping()">
+                {{ 'CHECKOUT.CONTINUE_SHOPPING' | translate }}
+              </button>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger">
+              {{ 'CHECKOUT.ORDER_ERROR' | translate }}
+              <button class="btn btn-sm btn-outline-danger ms-2" (click)="placeOrder()">
+                {{ 'GENERAL.RETRY' | translate }}
+              </button>
+            </div>
+
+            <div *ngIf="loading" class="text-center my-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">{{ 'GENERAL.LOADING' | translate }}</span>
+              </div>
+              <p class="mt-2">{{ 'CHECKOUT.PROCESSING_ORDER' | translate }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="d-flex justify-content-between">
+            <button
+              *ngIf="currentStep > 1 && !orderPlaced"
+              class="btn btn-outline-primary"
+              (click)="prevStep()"
+            >
+              <i class="bi bi-arrow-left me-1"></i>
+              {{ 'GENERAL.BACK' | translate }}
+            </button>
+
+            <div *ngIf="!orderPlaced">
+              <button
+                *ngIf="currentStep < 2"
+                class="btn btn-primary"
+                (click)="nextStep()"
+              >
+                {{ 'GENERAL.NEXT' | translate }}
+                <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+
+              <button
+                *ngIf="currentStep === 2"
+                class="btn btn-success"
+                (click)="placeOrder()"
+                [disabled]="loading"
+              >
+                <i class="bi bi-check-circle me-1"></i>
+                {{ 'CHECKOUT.PLACE_ORDER' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">{{ 'CART.ORDER_SUMMARY' | translate }}</h5>
+        </div>
+        <div class="card-body">
+          <!-- Items Summary -->
+          <div class="mb-3">
+            <h6>{{ 'CART.ITEMS' | translate }} ({{ cart.totalItems }})</h6>
+            <div class="order-items">
+              <div *ngFor="let item of cart.items" class="order-item d-flex justify-content-between mb-2">
+                <div>
+                  <span>{{ item.quantity }} x {{ item.product.name }}</span>
+                  <small *ngIf="item.size || item.color" class="d-block text-muted">
+                    <span *ngIf="item.size">{{ item.size }}</span>
+                    <span *ngIf="item.size && item.color"> / </span>
+                    <span *ngIf="item.color">{{ item.color }}</span>
+                  </small>
+                </div>
+                <span>{{ item.product.price * item.quantity | currency }}</span>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Price Summary -->
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ 'CART.SUBTOTAL' | translate }}</span>
+            <span>{{ cart.totalPrice | currency }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ 'CART.SHIPPING' | translate }}</span>
+            <span>{{ 'CART.FREE' | translate }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ 'CART.TAX' | translate }}</span>
+            <span>{{ getTaxAmount() | currency }}</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-2 fw-bold">
+            <span>{{ 'CART.TOTAL' | translate }}</span>
+            <span>{{ getTotalAmount() | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
