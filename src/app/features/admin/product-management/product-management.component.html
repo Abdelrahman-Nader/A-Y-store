@@ -30,6 +30,17 @@
             </div>
           </div>
 
+          <!-- Product Name Arabic -->
+          <div class="col-md-6 mb-3">
+            <label for="nameAr" class="form-label">اسم المنتج بالعربية</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nameAr"
+              formControlName="nameAr"
+            >
+          </div>
+
           <!-- Product Price -->
           <div class="col-md-3 mb-3">
             <label for="price" class="form-label">{{ 'ADMIN.PRODUCT_PRICE' | translate }}</label>
@@ -70,17 +81,17 @@
 
           <!-- Product Category -->
           <div class="col-md-6 mb-3">
-            <label for="category" class="form-label">{{ 'ADMIN.PRODUCT_CATEGORY' | translate }}</label>
-            <input
-              type="text"
-              class="form-control"
-              id="category"
-              formControlName="category"
-              [ngClass]="{ 'is-invalid': f['category'].touched && f['category'].errors }"
+            <label for="categoryId" class="form-label">{{ 'ADMIN.PRODUCT_CATEGORY' | translate }}</label>
+            <select
+              class="form-select"
+              id="categoryId"
+              formControlName="categoryId"
             >
-            <div *ngIf="f['category'].touched && f['category'].errors" class="invalid-feedback">
-              <div *ngIf="f['category'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
-            </div>
+              <option value="">اختر الفئة (اختياري)</option>
+              <option *ngFor="let category of categories" [value]="category.id">
+                {{ category.nameAr || category.name }}
+              </option>
+            </select>
           </div>
 
           <!-- Product Quantity -->
@@ -140,7 +151,7 @@
           </div>
 
           <!-- Product Description -->
-          <div class="col-md-12 mb-3">
+          <div class="col-md-6 mb-3">
             <label for="description" class="form-label">{{ 'ADMIN.PRODUCT_DESCRIPTION' | translate }}</label>
             <textarea
               class="form-control"
@@ -152,6 +163,17 @@
             <div *ngIf="f['description'].touched && f['description'].errors" class="invalid-feedback">
               <div *ngIf="f['description'].errors['required']">{{ 'VALIDATION.REQUIRED' | translate }}</div>
             </div>
+          </div>
+
+          <!-- Product Description Arabic -->
+          <div class="col-md-6 mb-3">
+            <label for="descriptionAr" class="form-label">وصف المنتج بالعربية</label>
+            <textarea
+              class="form-control"
+              id="descriptionAr"
+              formControlName="descriptionAr"
+              rows="3"
+            ></textarea>
           </div>
 
           <!-- Product Sizes -->
@@ -180,8 +202,23 @@
             <small class="form-text text-muted">{{ 'ADMIN.COLORS_HELP' | translate }}</small>
           </div>
 
+          <!-- Rating -->
+          <div class="col-md-3 mb-3">
+            <label for="rating" class="form-label">التقييم</label>
+            <input
+              type="number"
+              class="form-control"
+              id="rating"
+              formControlName="rating"
+              min="0"
+              max="5"
+              step="0.1"
+              placeholder="0.0 - 5.0"
+            >
+          </div>
+
           <!-- Featured and New Arrival -->
-          <div class="col-md-12 mb-3">
+          <div class="col-md-9 mb-3">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-check form-switch">

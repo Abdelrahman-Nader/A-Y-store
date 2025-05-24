@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { User, UserRole } from '../models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/users`;
+  private apiUrl = `${environment.apiUrl}/auth`;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
@@ -46,35 +46,24 @@ export class AuthService {
    * @param password User password
    */
   login(email: string, password: string): Observable<User> {
-    // In a real app, this would be a POST request to a login endpoint
-    // For now, we'll simulate it with a GET request to find the user
-    return this.http.get<User[]>(`${this.apiUrl}?email=${email}`).pipe(
-      map(users => {
-        const user = users[0];
-        
-        if (!user) {
-          throw new Error('User not found');
-        }
-        
-        // In a real app, password would be verified on the server
-        // This is just a simulation
-        if (password !== 'password') {
-          throw new Error('Invalid password');
-        }
-        
-        // Add token (in a real app, this would come from the server)
-        const authenticatedUser = {
-          ...user,
-          token: 'fake-jwt-token'
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
+      map(response => {
+        // تحويل البيانات إلى كائن User
+        const user: User = {
+          id: response.id,
+          name: response.name,
+          email: response.email,
+          role: response.role as UserRole,
+          token: response.token
         };
-        
-        // Store user in localStorage
-        this.saveUser(authenticatedUser);
-        
-        // Update current user subject
-        this.currentUserSubject.next(authenticatedUser);
-        
-        return authenticatedUser;
+
+        // تخزين المستخدم في localStorage
+        this.saveUser(user);
+
+        // تحديث موضوع المستخدم الحالي
+        this.currentUserSubject.next(user);
+
+        return user;
       }),
       catchError(error => {
         return throwError(() => error);
@@ -89,15 +78,29 @@ export class AuthService {
    * @param password User password
    */
   register(name: string, email: string, password: string): Observable<User> {
-    // In a real app, this would be a POST request to a register endpoint
-    // For now, we'll simulate it with a POST request to create a new user
-    const newUser = {
-      name,
-      email,
-      role: UserRole.CUSTOMER
-    };
-    
-    return this.http.post<User>(this.apiUrl, newUser);
+    return this.http.post<any>(`${this.apiUrl}/register`, { name, email, password }).pipe(
+      map(response => {
+        // تحويل البيانات إلى كائن User
+        const user: User = {
+          id: response.id,
+          name: response.name,
+          email: response.email,
+          role: response.role as UserRole,
+          token: response.token
+        };
+
+        // تخزين المستخدم في localStorage
+        this.saveUser(user);
+
+        // تحديث موضوع المستخدم الحالي
+        this.currentUserSubject.next(user);
+
+        return user;
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
@@ -106,9 +109,22 @@ export class AuthService {
   logout(): void {
     // Remove user from localStorage
     localStorage.removeItem('currentUser');
-    
+
     // Update current user subject
     this.currentUserSubject.next(null);
+  }
+
+  /**
+   * Get auth headers
+   */
+  getAuthHeaders(): HttpHeaders {
+    const user = this.getCurrentUser();
+    if (user && user.token) {
+      return new HttpHeaders({
+        'Authorization': `Bearer ${user.token}`
+      });
+    }
+    return new HttpHeaders();
   }
 
   /**
@@ -124,7 +140,7 @@ export class AuthService {
    */
   private loadUser(): void {
     const savedUser = localStorage.getItem('currentUser');
-    
+
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser) as User;
